@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def sierpinski_triangle(n_points, n_iterations):
+    points = np.zeros((n_points, 2))
+    # Initial triangle vertices
+    vertices = np.array([[0, 0], [0.5, np.sqrt(3)/2], [1, 0]])
+
+    # Choose a random starting point
+    x, y = np.random.random(2)
+    
+    for i in range(n_points):
+        # Randomly select one of the three vertices
+        vertex = np.random.randint(3)
+        # Calculate the midpoint between the current point and the randomly selected vertex
+        x = (x + vertices[vertex, 0]) / 2
+        y = (y + vertices[vertex, 1]) / 2
+        points[i] = [x, y]
+
+    return points
+
+def plot_sierpinski_triangle(points):
+    plt.scatter(points[:, 0], points[:, 1], s=1, c='blue', marker='.')
+    plt.title("Sierpinski Triangle Fractal")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+if __name__ == "__main__":
+    n_points = 100000
+    n_iterations = 100000
+    points = sierpinski_triangle(n_points, n_iterations)
+    plot_sierpinski_triangle(points)
