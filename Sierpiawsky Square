@@ -1,0 +1,47 @@
+import turtle
+
+# Function to draw a filled square
+def draw_square(t, x, y, size):
+    t.penup()
+    t.goto(x - size / 2, y - size / 2)
+    t.pendown()
+    t.begin_fill()
+    for _ in range(4):
+        t.forward(size)
+        t.left(90)
+    t.end_fill()
+
+# Function to draw the Sierpinski square
+def sierpinski_square(t, order, x, y, size):
+    if order == 0:
+        draw_square(t, x, y, size)
+    else:
+        sierpinski_square(t, order - 1, x - size / 3, y - size / 3, size / 3)
+        sierpinski_square(t, order - 1, x - size / 3, y + size / 3, size / 3)
+        sierpinski_square(t, order - 1, x + size / 3, y - size / 3, size / 3)
+        sierpinski_square(t, order - 1, x + size / 3, y + size / 3, size / 3)
+
+# Main function
+def main():
+    screen = turtle.Screen()
+    screen.setup(width=800, height=800)
+    screen.bgcolor("white")
+    screen.title("Sierpinski Square")
+
+    t = turtle.Turtle()
+    t.speed(0)
+    t.color("black")
+    t.fillcolor("black")
+
+    order = int(turtle.numinput("Sierpinski Square", "Enter the order of the fractal:", default=3, minval=0))
+    size = 600
+    x = 0
+    y = 0
+
+    sierpinski_square(t, order, x, y, size)
+
+    t.hideturtle()
+    screen.mainloop()
+
+if __name__ == "__main__":
+    main()
