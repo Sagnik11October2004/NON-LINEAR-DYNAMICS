@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def newton(z, f, f_prime, max_iter, tol):
+    n = 0
+    while n < max_iter:
+        if abs(f(z)) < tol:
+            return n
+        if abs(f_prime(z)) < 1e-6:
+            break
+        z = z - f(z) / f_prime(z)
+        n += 1
+    return max_iter
+
+def newton_fractal(width, height, x_min, x_max, y_min, y_max, max_iter, tol, f, f_prime):
+    image = np.zeros((width, height))
+    for x in range(width):
+        for y in range(height):
+            real = x * (x_max - x_min) / (width - 1) + x_min
+            imag = y * (y_max - y_min) / (height - 1) + y_min
+            z = complex(real, imag)
+            color = newton(z, f, f_prime, max_iter, tol)
+            image[x, y] = color
+    return image
+
+def plot_newton_fractal(image):
+    plt.imshow(image.T, cmap='inferno', extent=[-2, 2, -2, 2])
+    plt.colorbar(label='Iterations')
+    plt.xlabel('Re')
+    plt.ylabel('Im')
+    plt.title('Newton Fractal')
+    plt.show()
+
+# Example functions: z^3 - 1
+def f(z):
+    return z**3 - 1
+
+def f_prime(z):
+    return 3 * z**2
+
+# Parameters
+width = 800
+height = 800
+x_min = -2
+x_max = 2
+y_min = -2
+y_max = 2
+max_iter = 100
+tol = 1e-6
+
+# Generate Newton Fractal
+newton_image = newton_fractal(width, height, x_min, x_max, y_min, y_max, max_iter, tol, f, f_prime)
+
+# Plot Newton Fractal
+plot_newton_fractal(newton_image)
