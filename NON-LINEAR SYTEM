@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# Define the system of differential equations
+def normalise(p,q):
+    return ((p**2+q**2)**0.5)
+def equations(t, y):
+    dydt = np.zeros_like(y)
+    dydt[0] = y[1]   # dx/dt = -x + 2y
+    dydt[1] = -y[0] +y[1]   # dy/dt = -2x - y
+    return dydt
+
+# Generate grid of initial conditions
+x = np.linspace(-2, 2, 20)
+y = np.linspace(-2, 2, 20)
+X, Y = np.meshgrid(x, y)
+
+# Compute derivatives at each point in the grid
+U, V = equations(0, [X, Y])
+
+# Create a quiver plot for 2D phase portrait
+plt.figure(figsize=(8, 6))
+
+plt.quiver(X, Y, U/normalise(U,V), V/normalise(U,V), scale=20)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Phase Portrait of the System')
+plt.grid(True)
+plt.show()
